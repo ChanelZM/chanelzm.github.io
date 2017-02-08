@@ -13,8 +13,8 @@
     
     var app = {
         init: function init(){
-            myVariables.landingPage.style.display = 'block';
-            myVariables.bestPractices.style.display = 'none';
+            myVariables.landingPage.classList.add("active");
+            myVariables.landingPage.classList.remove("active");
             
             routes.init();
         }
@@ -33,11 +33,11 @@
     var sections = {
         toggle: function toggle(route){
             if (route == '#start'){
-                myVariables.landingPage.style.display = 'block';
-                myVariables.bestPractices.style.display = 'none';
+                myVariables.landingPage.classList.add("active");
+                myVariables.bestPractices.classList.remove("active");
             } else if (route == '#bestpractices'){
-                myVariables.bestPractices.style.display = 'block';
-                myVariables.landingPage.style.display = 'none';
+                myVariables.bestPractices.classList.add("active");
+                myVariables.landingPage.classList.remove("active");
             }
         }
     };
