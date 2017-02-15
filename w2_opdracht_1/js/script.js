@@ -52,15 +52,17 @@ console.log(data.results.map(function(){return data.results.difficulty;}));
     
     var sections = {
         toggle: function(route){
-            routie('quiz', function(){
-                selectedElements.quiz.removeAttribute('hidden');
-                selectedElements.landingPage.setAttribute('hidden', true);
-            });
+            routie({
+                'quiz': function() {
+                    selectedElements.quiz.removeAttribute('hidden');
+                    selectedElements.landingPage.setAttribute('hidden', true);
+                },
+                'start': function() {
+                    selectedElements.landingPage.removeAttribute('hidden');
+                    selectedElements.quiz.setAttribute('hidden', true);
+                }
+});
             
-            routie('start', function(){
-                selectedElements.landingPage.removeAttribute('hidden');
-                selectedElements.quiz.setAttribute('hidden', true);
-            });
         }
     };
     
