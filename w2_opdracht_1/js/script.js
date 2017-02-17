@@ -23,6 +23,24 @@
     
     //Store data of api's in data.
     var data = {
+//             Om geen herhaling van code te voorkomen zou je een functie hiervoor kunnnen schrijven met een parameter over
+//             het onderwerp die de api moet ophalen (science, history, music) zo zorg je voor DRY code. Hier is een voorbeeld.
+//         function retrieveQuestions(subject) {
+//         aja()
+//                 .method('get')
+//                 //API from https://opentdb.com/api_config.php
+//                 .url('https://opentdb.com/api.php?amount=20&category=14&difficulty=easy&type=multiple')
+//                 .type('json')
+//                 .on('200', function(subject){ //If the API is succesful, store the data in tv
+//                     localStorage.setItem(subject, JSON.stringify(subject)); //Source 1, put the data into local storage
+//                     sections.render(tv, 'api'); //Execute function sections.render with the parameter that has the data from the api and a string to tell where the data is being loaded from
+//                     //sections.renderAllQuestions(subject);
+//                 tv.results.map(function(val){
+//                     allData.push(val);
+//                 });
+//                 })
+//                 .go(); 
+//         }
         tv : function(){
             aja()
                 .method('get')
@@ -146,7 +164,6 @@
                     val.correct_answer
                 ];
             });
-
             var directives = {
                 question : {
                     text: function(params){
