@@ -22,7 +22,7 @@
         tvCheckbox : document.querySelector('#tv'),
         scienceNatureCheckbox : document.querySelector('#sciencenature'),
         historyCheckbox : document.querySelector('#history'),
-        musicCheckbox : document.querySelector('music')
+        musicCheckbox : document.querySelector('#music')
     };
     
     //Store data of api's in questions.
@@ -114,6 +114,9 @@
                     questions.scienceNature();
                     questions.history();
                     
+                    //Loading API takes times so the script executes selectQuestions while loading API, to prevent that, used setTimeout to delay this.
+                    setTimeout(sections.selectQuestions, 3000);
+                    
                     //filterCategories();
                 },
                 'categories/:name': function(name) {
@@ -177,7 +180,6 @@
             Transparency.render(elements.categoryList, categoryNames, categoryDirectives);
         },
         render: function(data, source) {
-            console.log(data);
             //Only save the properties I need in rolledUpData
             data.results.map(function(val){
                 //Return an array with the question, incorrect answers and correct answer.
@@ -190,8 +192,6 @@
                     val.category
                 ]);
             });
-            
-            console.log(rolledUpData);
             
             var selectedData = data.results.map(function(val){
                 //Return an array with the question, incorrect answers and correct answer.
@@ -245,6 +245,20 @@
             unactiveSections.forEach(function(unactiveSections){
                 unactiveSections.hidden = true;
                 currentSection.hidden = false;
+            });
+        },
+        selectQuestions: function(){
+            var question = document.querySelectorAll('.questionsection .question');
+            console.log(question);
+            
+            question.forEach(function(element){
+                element.addEventListener('click', function(){
+                    if(element.className !== 'questionsection selected'){
+                        element.className += ' selected';
+                    } else {
+                        element.classList.remove('selected');
+                    }
+                });
             });
         }
     };
