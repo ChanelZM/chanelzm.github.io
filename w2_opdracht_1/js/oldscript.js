@@ -5,8 +5,7 @@
     'use strict';
     
     //Later on this variable will contain all the questions of every category
-    var rolledUpData = [],
-        categories = [];
+    var rolledUpData = [];
     
     //Select elements in DOM and store them in variable elements
     var elements = {
@@ -24,7 +23,8 @@
     };
     
     //Store API calls in variable questions.
-    function getData(){
+    var questions = {
+        tv : function(){
             aja()
                 .method('get')
                 //API from https://opentdb.com/api_config.php
@@ -32,9 +32,11 @@
                 .type('json')
                 .on('200', function(tv){ //If the API is succesful, store the data in tv
                     localStorage.setItem('tv', JSON.stringify(tv)); //Source 1, put the data into local storage
-                    //sections.render(tv, 'api'); //Execute function sections.render with the parameter that has the data from the api and a string to tell where the data is being loaded from
+                    sections.render(tv, 'api'); //Execute function sections.render with the parameter that has the data from the api and a string to tell where the data is being loaded from
                 })
                 .go(); 
+        },
+        scienceNature : function(){
             aja()
                 .method('get')
                 //API from https://opentdb.com/api_config.php
@@ -42,9 +44,11 @@
                 .type('json')
                 .on('200', function(scienceNature){
                     localStorage.setItem('scienceNature', JSON.stringify(scienceNature)); //source 1
-                    //sections.render(scienceNature, 'api');
+                    sections.render(scienceNature, 'api');
                 })
                 .go();
+        },
+        history : function(){
             aja()
                 .method('get')
                 //API from https://opentdb.com/api_config.php
@@ -52,9 +56,11 @@
                 .type('json')
                 .on('200', function(history){
                     localStorage.setItem('history', JSON.stringify(history)); //source 1
-                    //sections.render(history, 'api');
+                    sections.render(history, 'api');
                 })
                 .go();
+        },
+        music : function(){
             aja()
                 .method('get')
                 //API from https://opentdb.com/api_config.php
@@ -62,75 +68,12 @@
                 .type('json')
                 .on('200', function(music){
                     localStorage.setItem('music', JSON.stringify(music)); //source 1
-                    //sections.render(music, 'api');
+                    sections.render(music, 'api');
                 })
                 .go();
-        
-        mapData();
         }
+    };
     
-    function mapData(){
-        var tv = JSON.parse(localStorage.getItem('tv')), 
-            scienceNature = JSON.parse(localStorage.getItem('scienceNature')), 
-            history = JSON.parse(localStorage.getItem('history')), 
-            music = JSON.parse(localStorage.getItem('music'));
-        
-        var newTv = tv.results.map(function(val){
-            //Return an array with the question, incorrect answers and correct answer.
-            return [
-                val.question,
-                val.incorrect_answers[0],
-                val.incorrect_answers[1],
-                val.incorrect_answers[2],
-                val.correct_answer,
-                val.category.replace(' ', '-')
-            ];
-        });
-        
-        var newScienceNature = scienceNature.results.map(function(val){
-            //Return an array with the question, incorrect answers and correct answer.
-            return [
-                val.question,
-                val.incorrect_answers[0],
-                val.incorrect_answers[1],
-                val.incorrect_answers[2],
-                val.correct_answer,
-                val.category.replace(' ', '-')
-            ];
-        });
-        
-        var newHistory = history.results.map(function(val){
-            //Return an array with the question, incorrect answers and correct answer.
-            return [
-                val.question,
-                val.incorrect_answers[0],
-                val.incorrect_answers[1],
-                val.incorrect_answers[2],
-                val.correct_answer,
-                val.category.replace(' ', '-')
-            ];
-        });
-        
-        var newMusic = music.results.map(function(val){
-            //Return an array with the question, incorrect answers and correct answer.
-            return [
-                val.question,
-                val.incorrect_answers[0],
-                val.incorrect_answers[1],
-                val.incorrect_answers[2],
-                val.correct_answer,
-                val.category.replace(' ', '-')
-            ];
-        });
-        
-        rolledUpData = newTv.concat(newScienceNature, newHistory, newMusic);
-        categories = rolledUpData.map(function(val){
-                return val[5];
-            }).filter(function(item, index, inputArray){//Source 2: remove all duplicates
-                return inputArray.indexOf(item) == index;
-            });
-        console.log(categories);
-    }
     
     //Settings for starting app.
     var app = {
@@ -144,7 +87,6 @@
         init: function(){ 
             //On load show the home page
             location.hash = '#home';
-            getData();
             
             routie({
                 'home': function() {
@@ -166,44 +108,103 @@
                     //Toggle the visibilty of sections
                     sections.toggle('quizgenerator');
                     
-                    sections.render(rolledUpData, 'local');
+                    //Call every api
+                    localStorage.getItem('tv') ? sections.render(JSON.parse(localStorage.getItem('tv')), 'local') : questions.tv();
+                    localStorage.getItem('music') ? sections.render(JSON.parse(localStorage.getItem('music')), 'local') : questions.music();
+                    localStorage.getItem('scienceNature') ? sections.render(JSON.parse(localStorage.getItem('scienceNature')), 'local') : questions.scienceNature();
+                    localStorage.getItem('history') ? sections.render(JSON.parse(localStorage.getItem('history')), 'local') : questions.history();
                     
                     //Loading API takes times so the script executes selectQuestions while loading API, to prevent that, used setTimeout to delay this.
                     setTimeout(sections.selectQuestions, 3000);
+                    
+                    sections.filter();
                 },
                 'categories/:name': function(name) {
                     //Hide all other elements except questionPanel and filterOptions
                     elements.categoryList.hidden = true;
                     elements.questionPanel.hidden = false;
                     
-                    var selectedCategory = rolledUpData.filter(function(val){
-                        return val[5] == name;
-                    });
-                    
-                    //Execute render
-                    sections.render(selectedCategory, 'local');
+                    //If the data you seek is in Local Storage, parse it and execute sections.render. Else execute the function where the api is loaded.
+                    localStorage.getItem(name) ? sections.render(JSON.parse(localStorage.getItem(name)), 'local') : questions[name]();
                 }
             });
         }
     };
     
+//    function filterCategories(){
+//        var filteredData;
+//        if(document.querySelector('#tv').checked){
+//            filteredData += rolledUpData.filter(function(val){
+//                return val.category == 'Entertainment: Television';
+//            });
+//        }
+//        if(document.querySelector('#sciencenature').checked){
+//            filteredData += rolledUpData.filter(function(val){
+//                return val.category == 'Science & Nature';
+//            });
+//        }
+//        if(document.querySelector('#history').checked){
+//            filteredData += rolledUpData.filter(function(val){
+//                return val.category == 'History';
+//            });
+//        }
+//        if(document.querySelector('#music').checked){
+//            filteredData += rolledUpData.filter(function(val){
+//                return val.category == 'Entertainment: Music';
+//            });
+//        }
+//        
+//        sections.render(filteredData, 'bla');
+//    }
+    
     var sections = {
         renderCategories: function(){
+            //Render the category names  into the elements and link them to their page
+            var categoryNames = [
+                Object.getOwnPropertyNames(questions)[0], 
+                Object.getOwnPropertyNames(questions)[1], 
+                Object.getOwnPropertyNames(questions)[2], 
+                Object.getOwnPropertyNames(questions)[3]
+            ];
+
             var categoryDirectives = {
                 category : {
                     href: function(){
                         return '#categories/' + this.value;
                     },
                     text : function(){
-                        return this.value.replace('-', ' ');
+                        return this.value;
                     }
                 }
             };
 
-            Transparency.render(elements.categoryList, categories, categoryDirectives);
+            Transparency.render(elements.categoryList, categoryNames, categoryDirectives);
         },
-        render: function(data, source) {      
-            //Use the data parameter to fill the elements in the section. Loop through all the data and add elements for them too.
+        render: function(data, source) {
+            rolledUpData || data.results.map(function(val){
+                //rolledUpData will contain all questions of every category
+                return rolledUpData.push([
+                    val.question,
+                    val.incorrect_answers[0],
+                    val.incorrect_answers[1],
+                    val.incorrect_answers[2],
+                    val.correct_answer,
+                    val.category
+                ]);
+            });
+            
+            var selectedData = data.results.map(function(val){
+                return [
+                    val.question,
+                    val.incorrect_answers[0],
+                    val.incorrect_answers[1],
+                    val.incorrect_answers[2],
+                    val.correct_answer,
+                    val.category
+                ];
+            });
+            
+            //Use the data from rolledUpData and selectedData to fill the elements in the section. Loop through all the data and add elements for them too.
             var directives = {
                 question : {
                     text: function(){
@@ -240,10 +241,8 @@
                 }
             };
             
-            Transparency.render(elements.questionPanel, data, directives); 
-            Transparency.render(elements.questionSection, data, directives);
-            
-            sections.filter();
+            Transparency.render(elements.questionPanel, selectedData, directives); 
+            Transparency.render(elements.questionSection, rolledUpData, directives);
             
         }, 
         toggle: function(route){
@@ -259,6 +258,7 @@
         selectQuestions: function(){
             //User can select questions for their own quiz
             var question = document.querySelectorAll('.questionsection .question');
+            console.log(question);
             
             question.forEach(function(element){
                 element.addEventListener('click', function(){
@@ -279,23 +279,13 @@
                 music : document.querySelector('#music')
             };
             
-            checkbox.tv.addEventListener('click', function(){
-                var tvQuestions = document.getElementsByClassName(categories[0]);
-                console.log(tvQuestions);
-                
-                //This isn't working yet
-                if(!checkbox.tv.checked){
-//                    tvQuestions.forEach(function(element){
-//                        element.hidden = true;
-//                    });
-                    console.log('ja');
-                } else {
-//                    tvQuestions.forEach(function(element){
-//                        element.hidden = true;
-//                    });
-                    console.log('nee');
-                }
-            });
+//            checkbox.tv.addEventListener('click', function(){
+//                if(!checkbox.tv.checked){
+//                    rolledUpData = rolledUpData.filter(function)
+//                } else {
+//                    document.getElementsByClassName(Object.getOwnPropertyNames(questions)[0]).hidden = true;
+//                }
+//            });
         }
     };
     
@@ -307,5 +297,3 @@
 //Sources:
 //1 : Stackoverflow. (2010). Storing Objects in HTML5 localStorage. Source:
 //http://stackoverflow.com/questions/2010892/storing-objects-in-html5-localstorage
-//2 : Stackoverflow. (2014). Remove Duplicate item from array Javascript [duplicate]. Source:
-//http://stackoverflow.com/questions/18008025/remove-duplicate-item-from-array-javascript
