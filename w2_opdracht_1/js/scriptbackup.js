@@ -165,10 +165,10 @@
 
             var categoryDirectives = {
                 category : {
-                    href: function(params){
+                    href: function(){
                         return '#categories/' + this.value;
                     },
-                    text : function(params){
+                    text : function(){
                         return this.value;
                     }
                 }
@@ -207,27 +207,27 @@
             //Use the data from rolledUpData to fill the elements in the section. Loop through all the data and add elements for them too.
             var directives = {
                 question : {
-                    text: function(params){
+                    text: function(){
                         return this[0];
                     }
                 },
                 answer1 : {
-                    text : function(params){
+                    text : function(){
                         return this[1];
                     }
                 },
                 answer2 : {
-                    text : function(params){
+                    text : function(){
                         return this[2];
                     }
                 },
                 answer3 : {
-                    text : function(params){
+                    text : function(){
                         return this[3];
                     }
                 },
                 correctanswer : {
-                    text : function(params){
+                    text : function(){
                         return this[4];
                     }
                 }
