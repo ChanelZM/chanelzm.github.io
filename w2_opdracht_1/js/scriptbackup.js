@@ -6,8 +6,8 @@
 
     var rolledUpData = [];
     
-    //Select elements in DOM and store them in selectedElements
-    var selectedElements = {
+    //Select elements in DOM and store them in elements
+    var elements = {
         landingPage : document.getElementById('start'),
         quiz : document.getElementById('categories'),
         categoryList : document.querySelector('#categorylist'),
@@ -25,8 +25,8 @@
         musicCheckbox : document.querySelector('music')
     };
     
-    //Store data of api's in data.
-    var data = {
+    //Store data of api's in questions.
+    var questions = {
         tv : function(){
             aja()
                 .method('get')
@@ -98,30 +98,30 @@
                 },
                 'categories': function(){
                     //Hide all other elements except categoryList
-                    selectedElements.categoryList.hidden = false;
-                    selectedElements.questionPanel.hidden = true;
+                    elements.categoryList.hidden = false;
+                    elements.questionPanel.hidden = true;
                     sections.renderCategories();
                     sections.toggle('categories');
                 },
                 'quizgenerator': function(){
                     //Toggle the visibilty of sections
-                    selectedElements.givenTitle.innerHTML = selectedElements.titleInput.value;
+                    elements.givenTitle.innerHTML = elements.titleInput.value;
                     sections.toggle('quizgenerator');
                     
                     //Call every api
-                    data.tv();
-                    data.music();
-                    data.scienceNature();
-                    data.history();
+                    questions.tv();
+                    questions.music();
+                    questions.scienceNature();
+                    questions.history();
                     
                     //filterCategories();
                 },
                 'categories/:name': function(name) {
                     //Hide all other elements except questionPanel and filterOptions
-                    selectedElements.categoryList.hidden = true;
-                    selectedElements.questionPanel.hidden = false;
+                    elements.categoryList.hidden = true;
+                    elements.questionPanel.hidden = false;
                     //If the data you seek is in Local Storage, parse it and execute sections.render. Else execute the function where the api is loaded.
-                    localStorage.getItem(name) ? sections.render(JSON.parse(localStorage.getItem(name)), 'local') : data[name]();
+                    localStorage.getItem(name) ? sections.render(JSON.parse(localStorage.getItem(name)), 'local') : questions[name]();
                 }
             });
         }
@@ -157,10 +157,10 @@
         renderCategories: function(){
             //Render the category names  into the elements and link them to their page
             var categoryNames = [
-                Object.getOwnPropertyNames(data)[0], 
-                Object.getOwnPropertyNames(data)[1], 
-                Object.getOwnPropertyNames(data)[2], 
-                Object.getOwnPropertyNames(data)[3]
+                Object.getOwnPropertyNames(questions)[0], 
+                Object.getOwnPropertyNames(questions)[1], 
+                Object.getOwnPropertyNames(questions)[2], 
+                Object.getOwnPropertyNames(questions)[3]
             ];
 
             var categoryDirectives = {
@@ -174,7 +174,7 @@
                 }
             };
 
-            Transparency.render(selectedElements.categoryList, categoryNames, categoryDirectives);
+            Transparency.render(elements.categoryList, categoryNames, categoryDirectives);
         },
         render: function(data, source) {
             console.log(data);
@@ -233,8 +233,8 @@
                 }
             };
             
-            Transparency.render(selectedElements.questionPanel, selectedData, directives); 
-            Transparency.render(selectedElements.questionSection, rolledUpData, directives);
+            Transparency.render(elements.questionPanel, selectedData, directives); 
+            Transparency.render(elements.questionSection, rolledUpData, directives);
             
         }, 
         toggle: function(route){

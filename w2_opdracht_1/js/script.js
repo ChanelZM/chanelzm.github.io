@@ -67,64 +67,66 @@
         mapData();
     })();
     
+    var rolledUpData;
+    
     function mapData(){
         var tv = JSON.parse(localStorage.getItem('tv')), 
             scienceNature = JSON.parse(localStorage.getItem('scienceNature')), 
             history = JSON.parse(localStorage.getItem('history')), 
             music = JSON.parse(localStorage.getItem('music'));
         
-        tv.results.map(function(val){
+        var newTv = tv.results.map(function(val){
             //Return an array with the question, incorrect answers and correct answer.
-            return rolledUpData.push([
+            return [
                 val.question,
                 val.incorrect_answers[0],
                 val.incorrect_answers[1],
                 val.incorrect_answers[2],
                 val.correct_answer,
                 val.category
-            ]);
+            ];
         });
         
-        scienceNature.results.map(function(val){
+        var newScienceNature = scienceNature.results.map(function(val){
             //Return an array with the question, incorrect answers and correct answer.
-            return rolledUpData.push([
+            return [
                 val.question,
                 val.incorrect_answers[0],
                 val.incorrect_answers[1],
                 val.incorrect_answers[2],
                 val.correct_answer,
                 val.category
-            ]);
+            ];
         });
         
-        history.results.map(function(val){
+        var newHistory = history.results.map(function(val){
             //Return an array with the question, incorrect answers and correct answer.
-            return rolledUpData.push([
+            return [
                 val.question,
                 val.incorrect_answers[0],
                 val.incorrect_answers[1],
                 val.incorrect_answers[2],
                 val.correct_answer,
                 val.category
-            ]);
+            ];
         });
         
-        music.results.map(function(val){
+        var newMusic = music.results.map(function(val){
             //Return an array with the question, incorrect answers and correct answer.
-            return rolledUpData.push([
+            return [
                 val.question,
                 val.incorrect_answers[0],
                 val.incorrect_answers[1],
                 val.incorrect_answers[2],
                 val.correct_answer,
                 val.category
-            ]);
+            ];
         });
         
-        var rolledUpData = [];
-        
-        console.log(rolledUpData);
+        rolledUpData = newTv.concat(newScienceNature, newHistory, newMusic);
     }
+    
+    console.log(rolledUpData);
     
     //var data = {
 //        tv : function(){
