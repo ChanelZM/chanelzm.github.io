@@ -83,7 +83,7 @@
                 val.incorrect_answers[1],
                 val.incorrect_answers[2],
                 val.correct_answer,
-                val.category.replace(' ', '-')
+                val.category.replace(' ', '-')//Remove possible spaces
             ];
         });
         
@@ -123,7 +123,7 @@
             ];
         });
         
-        rolledUpData = newTv.concat(newScienceNature, newHistory, newMusic);
+        rolledUpData = newTv.concat(newScienceNature, newHistory, newMusic);//Merge arrays
         categories = rolledUpData.map(function(val){
                 return val[5];
             }).filter(function(item, index, inputArray){//Source 2: remove all duplicates
