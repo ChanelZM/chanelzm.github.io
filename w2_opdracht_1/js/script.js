@@ -129,7 +129,6 @@
             }).filter(function(item, index, inputArray){//Source 2: remove all duplicates
                 return inputArray.indexOf(item) == index;
             });
-        console.log(categories);
     }
     
     //Settings for starting app.
@@ -144,8 +143,9 @@
         init: function(){ 
             //On load show the home page
             location.hash = '#home';
+            //Load data
             getData();
-            
+
             routie({
                 'home': function() {
                     //Execute toggle
@@ -157,12 +157,13 @@
                     elements.questionPanel.hidden = true;
                     
                     //Render the available categories and toggle the sections
-                    sections.renderCategories();
+                    sections.render(rolledUpData, 'local');
                     sections.toggle('categories');
                 },
                 'quizgenerator': function(){
                     //Show the title that the user gave.
                     elements.givenTitle.innerHTML = elements.titleInput.value;
+                    
                     //Toggle the visibilty of sections
                     sections.toggle('quizgenerator');
                     
@@ -188,20 +189,6 @@
     };
     
     var sections = {
-        renderCategories: function(){
-            var categoryDirectives = {
-                category : {
-                    href: function(){
-                        return '#categories/' + this.value;
-                    },
-                    text : function(){
-                        return this.value.replace('-', ' ');
-                    }
-                }
-            };
-
-            Transparency.render(elements.categoryList, categories, categoryDirectives);
-        },
         render: function(data, source) {      
             //Use the data parameter to fill the elements in the section. Loop through all the data and add elements for them too.
             var directives = {
@@ -240,11 +227,60 @@
                 }
             };
             
+            var categoryDirectives = {
+                category : {
+                    href: function(){
+                        return '#categories/' + this.value;
+                    },
+                    text : function(){
+                        return this.value.replace('-', ' ');
+                    }
+                }
+            };
+            
+            //Create checkboxes and labels for every category
+            var values = {
+                filtercategory : {
+                    value: function(){
+                        return this.value;
+                    },
+                    id: function(){
+                        return this.value;
+                    }
+                },
+                label : {
+                    text: function(){
+                        return this.value.replace('-', ' ');
+                    },
+                    for: function(){
+                        return this.value;
+                    }
+                }
+            };
+            
             Transparency.render(elements.questionPanel, data, directives); 
             Transparency.render(elements.questionSection, data, directives);
+            Transparency.render(elements.filterOptions, categories, values);
+            Transparency.render(elements.categoryList, categories, categoryDirectives);
             
-            sections.filter();
-            
+            //Filter through the data everytime the user clicks on a checkboxs
+            elements.filterOptions.addEventListener('click', function(){
+                //Creates object with checkbox values and if they are checked.
+                var filterValues = {
+                    'Entertainment:-Television' : document.querySelector('input[value="' + categories[0] + '"]').checked,
+                    'Science-& Nature' : document.querySelector('input[value="' + categories[1] + '"]').checked,
+                    'History' : document.querySelector('input[value="' + categories[2] + '"]').checked,
+                    'Entertainment:-Music' : document.querySelector('input[value="' + categories[3] + '"]').checked
+                };
+                
+                function categorySelection(dataArray){
+                    return filterValues[dataArray[5]];
+                }
+                
+                var filteredData = rolledUpData.filter(categorySelection);
+                
+                sections.render(filteredData, 'local');
+            });
         }, 
         toggle: function(route){
             //Change all the other sections to hidden, except the active tab. Source: Shyanta Vleugel
@@ -268,33 +304,6 @@
                         element.classList.remove('selected');
                     }
                 });
-            });
-        },
-        filter: function(){
-            console.log(rolledUpData);
-            var checkbox = {
-                tv : document.querySelector('#tv'),
-                scienceNature : document.querySelector('#sciencenature'),
-                history : document.querySelector('#history'),
-                music : document.querySelector('#music')
-            };
-            
-            checkbox.tv.addEventListener('click', function(){
-                var tvQuestions = document.getElementsByClassName(categories[0]);
-                console.log(tvQuestions);
-                
-                //This isn't working yet
-                if(!checkbox.tv.checked){
-//                    tvQuestions.forEach(function(element){
-//                        element.hidden = true;
-//                    });
-                    console.log('ja');
-                } else {
-//                    tvQuestions.forEach(function(element){
-//                        element.hidden = true;
-//                    });
-                    console.log('nee');
-                }
             });
         }
     };
