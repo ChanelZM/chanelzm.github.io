@@ -24,7 +24,8 @@
     };
     
     //Store API calls in variable questions.
-    function getData(){
+    var get = {
+        data: function(){
             aja()
                 .method('get')
                 //API from https://opentdb.com/api_config.php
@@ -66,10 +67,12 @@
                 })
                 .go();
         
-        mapData();
+        map.data();
         }
+ };
     
-    function mapData(){
+    var map = {
+        data : function(){
         var tv = JSON.parse(localStorage.getItem('tv')), 
             scienceNature = JSON.parse(localStorage.getItem('scienceNature')), 
             history = JSON.parse(localStorage.getItem('history')), 
@@ -130,6 +133,7 @@
                 return inputArray.indexOf(item) == index;
             });
     }
+ };
     
     //Settings for starting app.
     var app = {
@@ -144,7 +148,7 @@
             //On load show the home page
             location.hash = '#home';
             //Load data
-            getData();
+            get.data();
 
             routie({
                 'home': function() {
@@ -157,31 +161,24 @@
                     elements.questionPanel.hidden = true;
                     
                     //Render the available categories and toggle the sections
-                    sections.render(rolledUpData, 'local');
                     sections.toggle('categories');
+                    sections.render(rolledUpData, 'local');
                 },
                 'quizgenerator': function(){
                     //Show the title that the user gave.
                     elements.givenTitle.innerHTML = elements.titleInput.value;
                     
-                    //Toggle the visibilty of sections
                     sections.toggle('quizgenerator');
-                    
                     sections.render(rolledUpData, 'local');
-                    
-                    //Loading API takes times so the script executes selectQuestions while loading API, to prevent that, used setTimeout to delay this.
-                    setTimeout(sections.selectQuestions, 3000);
                 },
                 'categories/:name': function(name) {
-                    //Hide all other elements except questionPanel and filterOptions
                     elements.categoryList.hidden = true;
                     elements.questionPanel.hidden = false;
                     
                     var selectedCategory = rolledUpData.filter(function(val){
                         return val[5] == name;
                     });
-                    
-                    //Execute render
+                
                     sections.render(selectedCategory, 'local');
                 }
             });
@@ -281,6 +278,8 @@
                 
                 sections.render(filteredData, 'local');
             });
+            
+            sections.selectQuestions();
         }, 
         toggle: function(route){
             //Change all the other sections to hidden, except the active tab. Source: Shyanta Vleugel
