@@ -24,8 +24,8 @@
     };
     
     //Store API calls in variable questions.
-    var get = {
-        data: function(){
+    // Elton says: Why make a object with only one method or property
+    var getData = function(){
             aja()
                 .method('get')
                 //API from https://opentdb.com/api_config.php
@@ -70,7 +70,7 @@
         map.data();
         }
  };
-    
+    // Elton says: "var map" is very a confusing name. When i read map i think of map as in a google map
     var map = {
         data : function(){
         var tv = JSON.parse(localStorage.getItem('tv')), 
