@@ -1,7 +1,28 @@
-.hidden {
-    display: none;
+/* GENERAL */
+body {
+    background-color: #6E3B56;
+    color: white;
 }
 
-.visible {
-    display: block;
+/* NAVIGATION */
+.mainnavigation ul {
+    padding-left: 0;
+}
+
+.mainnavigation li {
+    list-style: none;
+}
+
+.mainnavigation a {
+    color: white;
+    text-decoration: none;
+}
+
+.mainnavigation a:visited {
+    color: white;
+}
+
+.mainnavigation a:hover {
+    color: #eddee6;
+    cursor: pointer;
 }

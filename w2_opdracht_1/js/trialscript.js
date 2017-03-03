@@ -26,44 +26,29 @@
     //Store API calls in variable questions.
     var get = {
         data: function(){
-            aja()
+            var fills = [
+                {name: 'tv',
+                 number: 14},
+                {name: 'scienceNature',
+                 number: 17},
+                {name: 'history',
+                 number: 23},
+                {name: 'music',
+                 number: 12}
+            ]; 
+            
+            fills.forEach(function(obj){
+                aja()
                 .method('get')
                 //API from https://opentdb.com/api_config.php
-                .url('https://opentdb.com/api.php?amount=20&category=14&difficulty=easy&type=multiple')
+                .url('https://opentdb.com/api.php?amount=20&category=' + obj.number + '&difficulty=easy&type=multiple')
                 .type('json')
-                .on('200', function(tv){ //If the API is succesful, store the data in tv
-                        localStorage.setItem('tv', JSON.stringify(tv)); //Source 1, put the data into local storage
-                })
-                .go(); 
-            aja()
-                .method('get')
-                //API from https://opentdb.com/api_config.php
-                .url('https://opentdb.com/api.php?amount=20&category=17&difficulty=easy&type=multiple')
-                .type('json')
-                .on('200', function(scienceNature){
-                    localStorage.setItem('scienceNature', JSON.stringify(scienceNature)); //source 1
-                })
-                .go();
-            aja()
-                .method('get')
-                //API from https://opentdb.com/api_config.php
-                .url('https://opentdb.com/api.php?amount=20&category=23&difficulty=easy&type=multiple')
-                .type('json')
-                .on('200', function(history){
-                    localStorage.setItem('history', JSON.stringify(history)); //source 1
+                .on('200', function(response){ //If the API is succesful, store the data in tv
+                    localStorage.setItem(obj.name, JSON.stringify(response)); //Source 1, put the data into local storage
+                    map.data();
                 })
                 .go();
-            aja()
-                .method('get')
-                //API from https://opentdb.com/api_config.php
-                .url('https://opentdb.com/api.php?amount=20&category=12&difficulty=easy&type=multiple')
-                .type('json')
-                .on('200', function(music){
-                    localStorage.setItem('music', JSON.stringify(music)); //source 1
-                })
-                .go();
-        
-        map.data();
+            }); 
         }
  };
     
