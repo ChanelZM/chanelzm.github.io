@@ -9,13 +9,13 @@ SPA Actor Diagram
 ![Actor Diagram](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/SPA_actor_diagram.png)
 
 Flowchart Quiz Generator
-![Flowchart Quiz Generator](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/flowchartquizgenerator.png)
+![Flowchart Quiz Generator](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/lowchartquizgenerator.png)
 
 Flowchart Categories
-![Flowchart Categories](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/flowchartcategories.png)
+![Flowchart Categories](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/Flowchartcategories.png)
 
 Flowchart On Load
-![Flowchart On Load](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/flowchartonload.png)
+![Flowchart On Load](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/Flowchartonload.png)
 
 ##References
 
