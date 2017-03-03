@@ -45,7 +45,7 @@
                 .type('json')
                 .on('200', function(response){ //If the API is succesful, store the data in tv
                     localStorage.setItem(obj.name, JSON.stringify(response)); //Source 1, put the data into local storage
-                    map.data();
+                    map.data(obj.name);
                 })
                 .go();
             }); 
@@ -53,68 +53,26 @@
  };
     
     var map = {
-        data : function(){
-        var tv = JSON.parse(localStorage.getItem('tv')), 
-            scienceNature = JSON.parse(localStorage.getItem('scienceNature')), 
-            history = JSON.parse(localStorage.getItem('history')), 
-            music = JSON.parse(localStorage.getItem('music'));
-        
-        var newTv = tv.results.map(function(val){
-            //Return an array with the question, incorrect answers and correct answer.
-            return [
-                val.question,
-                val.incorrect_answers[0],
-                val.incorrect_answers[1],
-                val.incorrect_answers[2],
-                val.correct_answer,
-                val.category.replace(' ', '-')//Remove possible spaces
-            ];
-        });
-        
-        var newScienceNature = scienceNature.results.map(function(val){
-            //Return an array with the question, incorrect answers and correct answer.
-            return [
-                val.question,
-                val.incorrect_answers[0],
-                val.incorrect_answers[1],
-                val.incorrect_answers[2],
-                val.correct_answer,
-                val.category.replace(' ', '-')
-            ];
-        });
-        
-        var newHistory = history.results.map(function(val){
-            //Return an array with the question, incorrect answers and correct answer.
-            return [
-                val.question,
-                val.incorrect_answers[0],
-                val.incorrect_answers[1],
-                val.incorrect_answers[2],
-                val.correct_answer,
-                val.category.replace(' ', '-')
-            ];
-        });
-        
-        var newMusic = music.results.map(function(val){
-            //Return an array with the question, incorrect answers and correct answer.
-            return [
-                val.question,
-                val.incorrect_answers[0],
-                val.incorrect_answers[1],
-                val.incorrect_answers[2],
-                val.correct_answer,
-                val.category.replace(' ', '-')
-            ];
-        });
-        
-        rolledUpData = newTv.concat(newScienceNature, newHistory, newMusic);//Merge arrays
-        categories = rolledUpData.map(function(val){
-                return val[5];
-            }).filter(function(item, index, inputArray){//Source 2: remove all duplicates
-                return inputArray.indexOf(item) == index;
+        data : function(data){
+            var parsedData = JSON.parse(localStorage.getItem(data));
+            var mappedData = parsedData.results.map(function(val){
+                //Return an array with the question, incorrect answers and correct answer.
+                return [
+                    val.question,
+                    val.incorrect_answers[0],
+                    val.incorrect_answers[1],
+                    val.incorrect_answers[2],
+                    val.correct_answer,
+                    val.category.replace(' ', '-')//Remove possible spaces
+                ];
             });
-    }
- };
+            
+            //Without forEach, rolledUpData will be arrays in arrays in an array. With forEach just all arrays in one array
+            mappedData.forEach(function(item){
+                rolledUpData.push(item);  
+            });
+        }
+    };
     
     //Settings for starting app.
     var app = {
@@ -129,7 +87,6 @@
             //On load show the home page
             location.hash = '#home';
             //Load data
-            console.log('bla');
             get.data();
 
             routie({
