@@ -253,11 +253,11 @@
         },
         selectQuestions: function(){
             //User can select questions for their own quiz
-            var question = document.querySelectorAll('.questionsection .question');
+            var questionandanswer = document.querySelectorAll('.questionandanswer');
             
-            question.forEach(function(element){
+            questionandanswer.forEach(function(element){
                 element.addEventListener('click', function(){
-                    if(element.className !== 'question selected'){
+                    if(element.className !== 'questionandanswer selected'){
                         element.className += ' selected';
                     } else {
                         element.classList.remove('selected');

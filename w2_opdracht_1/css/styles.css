@@ -1,11 +1,41 @@
 /* GENERAL */
+@font-face {
+    font-family: 'Daddy in Space DEMO';
+    src: url('../fonts/DaddyinspaceDEMO.otf');
+    src: local('Daddy in Space DEMO');
+}
+
 body {
     background-color: #6E3B56;
+    color: #eddee6;
+    font-family: 'Helvetica', sans-serif;
+    margin: auto;
+    max-width: 60em;
+}
+
+a:visited {
     color: white;
+}
+
+a:hover {
+    color: #eddee6;
+    cursor: pointer;
+}
+
+h1, h2 {
+    color: white;
+    font-family: 'Daddy in Space DEMO', sans-serif;
+}
+
+h1 {
+    text-align: center;
 }
 
 /* NAVIGATION */
 .mainnavigation ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     padding-left: 0;
 }
 
@@ -13,16 +43,40 @@ body {
     list-style: none;
 }
 
+.mainnavigation li + li {
+    margin-left: 2rem;
+}
+
 .mainnavigation a {
-    color: white;
     text-decoration: none;
 }
 
-.mainnavigation a:visited {
-    color: white;
+/* QUESTION SECTION */
+.questionandanswer {
+    background-color: #A1567E;
+    border-radius: 10px;
 }
 
-.mainnavigation a:hover {
-    color: #eddee6;
-    cursor: pointer;
+.questionandanswer + .questionandanswer {
+    margin-top: 2rem;
+}
+
+.question, .answers {
+    margin: 0;
+}
+
+.answers + .question {
+    margin-top: 2rem;
+}
+
+.question {
+    padding: 1em;
+}
+
+.answers {
+    padding: 0 1em 1em 3em;
+}
+
+.selected {
+    background-color: #af6a8f;
 }
