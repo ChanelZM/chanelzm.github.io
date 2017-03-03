@@ -53,8 +53,8 @@
                         localStorage.setItem(obj.name, JSON.stringify(response)); //Source 1, put the data into local storage
                         map.data(obj.name);
                     })
-                    .on('error', function(response){
-                        location.href = '#errorpage';
+                    .on('error', function(response){ //Ian helped me with this
+                        location.href = '#errorpage'; //Source 3: redirect to error page
                     })
                     .go();
                 }
@@ -277,3 +277,5 @@
 //http://stackoverflow.com/questions/2010892/storing-objects-in-html5-localstorage
 //2 : Stackoverflow. (2014). Remove Duplicate item from array Javascript [duplicate]. Source:
 //http://stackoverflow.com/questions/18008025/remove-duplicate-item-from-array-javascript
+//3 : Stackoverflow. (2009). How do I redirect to another page in Javascript/Jquery. soruce:
+//http://stackoverflow.com/questions/503093/how-do-i-redirect-to-another-page-in-javascript-jquery
