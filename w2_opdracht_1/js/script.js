@@ -9,6 +9,7 @@
     
     //Select elements in DOM and store them in variable elements
     var elements = {
+        navigation: document.querySelector('.mainnavigation'),
         landingPage : document.getElementById('start'),
         quiz : document.getElementById('categories'),
         categoryList : document.querySelector('#categorylist'),
@@ -51,6 +52,9 @@
                         //If the dataload is succesful, store into localStorage
                         localStorage.setItem(obj.name, JSON.stringify(response)); //Source 1, put the data into local storage
                         map.data(obj.name);
+                    })
+                    .on('error', function(response){
+                        location.href = '#errorpage';
                     })
                     .go();
                 }
