@@ -6,16 +6,16 @@
 
 ##How to use
 SPA Actor Diagram
-![Actor Diagram](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/SPA_actor_diagram.svg)
+![Actor Diagram](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/SPA_actor_diagram.png)
 
 Flowchart Quiz Generator
-![Flowchart Quiz Generator](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/flowchartquizgenerator.svg)
+![Flowchart Quiz Generator](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/flowchartquizgenerator.png)
 
 Flowchart Categories
-![Flowchart Categories](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/flowchartcategories.svg)
+![Flowchart Categories](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/flowchartcategories.png)
 
 Flowchart On Load
-![Flowchart On Load](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/flowchartonload.svg)
+![Flowchart On Load](https://github.com/ChanelZM/webapp_from_scratch/blob/master/jpg/flowchartonload.png)
 
 ##References
 
