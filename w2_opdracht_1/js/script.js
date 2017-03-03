@@ -5,8 +5,7 @@
     'use strict';
     
     //Later on this variable will contain all the questions of every category
-    var rolledUpData = [],
-        categories = [];
+    var rolledUpData = [];
     
     //Select elements in DOM and store them in variable elements
     var elements = {
@@ -23,113 +22,63 @@
         filterOptions : document.querySelector('.filteroptions')
     };
     
-    //Store API calls in variable questions.
+    //Get the data
     var get = {
         data: function(){
-            aja()
-                .method('get')
-                //API from https://opentdb.com/api_config.php
-                .url('https://opentdb.com/api.php?amount=20&category=14&difficulty=easy&type=multiple')
-                .type('json')
-                .on('200', function(tv){ //If the API is succesful, store the data in tv
-                        localStorage.setItem('tv', JSON.stringify(tv)); //Source 1, put the data into local storage
-                })
-                .go(); 
-            aja()
-                .method('get')
-                //API from https://opentdb.com/api_config.php
-                .url('https://opentdb.com/api.php?amount=20&category=17&difficulty=easy&type=multiple')
-                .type('json')
-                .on('200', function(scienceNature){
-                    localStorage.setItem('scienceNature', JSON.stringify(scienceNature)); //source 1
-                })
-                .go();
-            aja()
-                .method('get')
-                //API from https://opentdb.com/api_config.php
-                .url('https://opentdb.com/api.php?amount=20&category=23&difficulty=easy&type=multiple')
-                .type('json')
-                .on('200', function(history){
-                    localStorage.setItem('history', JSON.stringify(history)); //source 1
-                })
-                .go();
-            aja()
-                .method('get')
-                //API from https://opentdb.com/api_config.php
-                .url('https://opentdb.com/api.php?amount=20&category=12&difficulty=easy&type=multiple')
-                .type('json')
-                .on('200', function(music){
-                    localStorage.setItem('music', JSON.stringify(music)); //source 1
-                })
-                .go();
-        
-        map.data();
+            var fills = [
+                {name: 'tv',
+                 number: 14},
+                {name: 'scienceNature',
+                 number: 17},
+                {name: 'history',
+                 number: 23},
+                {name: 'music',
+                 number: 12}
+            ]; 
+            
+            //Load in 4 API's with categories
+            fills.forEach(function(obj){
+                //Check if the data is already in localStorage then execute map.data()
+                if(localStorage.getItem(obj.name)){
+                    map.data(obj.name);
+                } else {//Otherwise load data from URL
+                    aja()
+                    .method('get')
+                    //API from https://opentdb.com/api_config.php
+                    .url('https://opentdb.com/api.php?amount=20&category=' + obj.number + '&difficulty=easy&type=multiple')
+                    .type('json')
+                    .on('200', function(response){
+                        //If the dataload is succesful, store into localStorage
+                        localStorage.setItem(obj.name, JSON.stringify(response)); //Source 1, put the data into local storage
+                        map.data(obj.name);
+                    })
+                    .go();
+                }
+            }); 
         }
  };
-    
+    //Filter the properties you dont need and place everything into one array
     var map = {
-        data : function(){
-        var tv = JSON.parse(localStorage.getItem('tv')), 
-            scienceNature = JSON.parse(localStorage.getItem('scienceNature')), 
-            history = JSON.parse(localStorage.getItem('history')), 
-            music = JSON.parse(localStorage.getItem('music'));
-        
-        var newTv = tv.results.map(function(val){
-            //Return an array with the question, incorrect answers and correct answer.
-            return [
-                val.question,
-                val.incorrect_answers[0],
-                val.incorrect_answers[1],
-                val.incorrect_answers[2],
-                val.correct_answer,
-                val.category.replace(' ', '-')//Remove possible spaces
-            ];
-        });
-        
-        var newScienceNature = scienceNature.results.map(function(val){
-            //Return an array with the question, incorrect answers and correct answer.
-            return [
-                val.question,
-                val.incorrect_answers[0],
-                val.incorrect_answers[1],
-                val.incorrect_answers[2],
-                val.correct_answer,
-                val.category.replace(' ', '-')
-            ];
-        });
-        
-        var newHistory = history.results.map(function(val){
-            //Return an array with the question, incorrect answers and correct answer.
-            return [
-                val.question,
-                val.incorrect_answers[0],
-                val.incorrect_answers[1],
-                val.incorrect_answers[2],
-                val.correct_answer,
-                val.category.replace(' ', '-')
-            ];
-        });
-        
-        var newMusic = music.results.map(function(val){
-            //Return an array with the question, incorrect answers and correct answer.
-            return [
-                val.question,
-                val.incorrect_answers[0],
-                val.incorrect_answers[1],
-                val.incorrect_answers[2],
-                val.correct_answer,
-                val.category.replace(' ', '-')
-            ];
-        });
-        
-        rolledUpData = newTv.concat(newScienceNature, newHistory, newMusic);//Merge arrays
-        categories = rolledUpData.map(function(val){
-                return val[5];
-            }).filter(function(item, index, inputArray){//Source 2: remove all duplicates
-                return inputArray.indexOf(item) == index;
+        data : function(data){
+            var parsedData = JSON.parse(localStorage.getItem(data));
+            var mappedData = parsedData.results.map(function(val){
+                //Return an array with the question, incorrect answers and correct answer.
+                return [
+                    val.question,
+                    val.incorrect_answers[0],
+                    val.incorrect_answers[1],
+                    val.incorrect_answers[2],
+                    val.correct_answer,
+                    val.category.replace(' ', '-')//Remove possible spaces
+                ];
             });
-    }
- };
+            
+            //Without forEach, rolledUpData will contain an array for every category, with it, it will be one array with all categories
+            mappedData.forEach(function(item){
+                rolledUpData.push(item);  
+            });
+        }
+    };
     
     //Settings for starting app.
     var app = {
@@ -144,12 +93,10 @@
             //On load show the home page
             location.hash = '#home';
             //Load data
-            console.log('bla');
             get.data();
 
             routie({
                 'home': function() {
-                    //Execute toggle
                     sections.toggle('home');
                 },
                 'categories': function(){
@@ -187,7 +134,14 @@
     };
     
     var sections = {
-        render: function(data, source) {      
+        //Render the API data into different HTML elements using Transparency
+        render: function(data, source) {
+            var categories = rolledUpData.map(function(val){
+                return val[5];
+            }).filter(function(item, index, inputArray){//Source 2: remove all duplicates
+                return inputArray.indexOf(item) == index;
+            });
+            
             //Use the data parameter to fill the elements in the section. Loop through all the data and add elements for them too.
             var directives = {
                 question : {
@@ -261,7 +215,7 @@
             Transparency.render(elements.filterOptions, categories, values);
             Transparency.render(elements.categoryList, categories, categoryDirectives);
             
-            //Filter through the data everytime the user clicks on a checkboxs
+            //Filter through the data everytime the user clicks on a checkbox
             elements.filterOptions.addEventListener('click', function(){
                 //Creates object with checkbox values and if they are checked.
                 var filterValues = {
@@ -277,6 +231,7 @@
                 
                 var filteredData = rolledUpData.filter(categorySelection);
                 
+                //Render only the filtered data
                 sections.render(filteredData, 'local');
             });
             

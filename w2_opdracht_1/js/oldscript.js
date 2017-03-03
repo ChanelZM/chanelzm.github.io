@@ -26,53 +26,110 @@
     //Store API calls in variable questions.
     var get = {
         data: function(){
-            var fills = [
-                {name: 'tv',
-                 number: 14},
-                {name: 'scienceNature',
-                 number: 17},
-                {name: 'history',
-                 number: 23},
-                {name: 'music',
-                 number: 12}
-            ]; 
-            
-            fills.forEach(function(obj){
-                aja()
+            aja()
                 .method('get')
                 //API from https://opentdb.com/api_config.php
-                .url('https://opentdb.com/api.php?amount=20&category=' + obj.number + '&difficulty=easy&type=multiple')
+                .url('https://opentdb.com/api.php?amount=20&category=14&difficulty=easy&type=multiple')
                 .type('json')
-                .on('200', function(response){ //If the API is succesful, store the data in tv
-                    localStorage.setItem(obj.name, JSON.stringify(response)); //Source 1, put the data into local storage
-                    map.data(obj.name);
+                .on('200', function(tv){ //If the API is succesful, store the data in tv
+                        localStorage.setItem('tv', JSON.stringify(tv)); //Source 1, put the data into local storage
+                })
+                .go(); 
+            aja()
+                .method('get')
+                //API from https://opentdb.com/api_config.php
+                .url('https://opentdb.com/api.php?amount=20&category=17&difficulty=easy&type=multiple')
+                .type('json')
+                .on('200', function(scienceNature){
+                    localStorage.setItem('scienceNature', JSON.stringify(scienceNature)); //source 1
                 })
                 .go();
-            }); 
+            aja()
+                .method('get')
+                //API from https://opentdb.com/api_config.php
+                .url('https://opentdb.com/api.php?amount=20&category=23&difficulty=easy&type=multiple')
+                .type('json')
+                .on('200', function(history){
+                    localStorage.setItem('history', JSON.stringify(history)); //source 1
+                })
+                .go();
+            aja()
+                .method('get')
+                //API from https://opentdb.com/api_config.php
+                .url('https://opentdb.com/api.php?amount=20&category=12&difficulty=easy&type=multiple')
+                .type('json')
+                .on('200', function(music){
+                    localStorage.setItem('music', JSON.stringify(music)); //source 1
+                })
+                .go();
+        
+        map.data();
         }
  };
     
     var map = {
-        data : function(data){
-            var parsedData = JSON.parse(localStorage.getItem(data));
-            var mappedData = parsedData.results.map(function(val){
-                //Return an array with the question, incorrect answers and correct answer.
-                return [
-                    val.question,
-                    val.incorrect_answers[0],
-                    val.incorrect_answers[1],
-                    val.incorrect_answers[2],
-                    val.correct_answer,
-                    val.category.replace(' ', '-')//Remove possible spaces
-                ];
+        data : function(){
+        var tv = JSON.parse(localStorage.getItem('tv')), 
+            scienceNature = JSON.parse(localStorage.getItem('scienceNature')), 
+            history = JSON.parse(localStorage.getItem('history')), 
+            music = JSON.parse(localStorage.getItem('music'));
+        
+        var newTv = tv.results.map(function(val){
+            //Return an array with the question, incorrect answers and correct answer.
+            return [
+                val.question,
+                val.incorrect_answers[0],
+                val.incorrect_answers[1],
+                val.incorrect_answers[2],
+                val.correct_answer,
+                val.category.replace(' ', '-')//Remove possible spaces
+            ];
+        });
+        
+        var newScienceNature = scienceNature.results.map(function(val){
+            //Return an array with the question, incorrect answers and correct answer.
+            return [
+                val.question,
+                val.incorrect_answers[0],
+                val.incorrect_answers[1],
+                val.incorrect_answers[2],
+                val.correct_answer,
+                val.category.replace(' ', '-')
+            ];
+        });
+        
+        var newHistory = history.results.map(function(val){
+            //Return an array with the question, incorrect answers and correct answer.
+            return [
+                val.question,
+                val.incorrect_answers[0],
+                val.incorrect_answers[1],
+                val.incorrect_answers[2],
+                val.correct_answer,
+                val.category.replace(' ', '-')
+            ];
+        });
+        
+        var newMusic = music.results.map(function(val){
+            //Return an array with the question, incorrect answers and correct answer.
+            return [
+                val.question,
+                val.incorrect_answers[0],
+                val.incorrect_answers[1],
+                val.incorrect_answers[2],
+                val.correct_answer,
+                val.category.replace(' ', '-')
+            ];
+        });
+        
+        rolledUpData = newTv.concat(newScienceNature, newHistory, newMusic);//Merge arrays
+        categories = rolledUpData.map(function(val){
+                return val[5];
+            }).filter(function(item, index, inputArray){//Source 2: remove all duplicates
+                return inputArray.indexOf(item) == index;
             });
-            
-            //Without forEach, rolledUpData will be arrays in arrays in an array. With forEach just all arrays in one array
-            mappedData.forEach(function(item){
-                rolledUpData.push(item);  
-            });
-        }
-    };
+    }
+ };
     
     //Settings for starting app.
     var app = {
@@ -87,6 +144,7 @@
             //On load show the home page
             location.hash = '#home';
             //Load data
+            console.log('bla');
             get.data();
 
             routie({
