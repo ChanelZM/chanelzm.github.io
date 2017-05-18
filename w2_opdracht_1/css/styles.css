@@ -1,4 +1,8 @@
-/* GENERAL */
+/*
+blue: rgb(204, 242, 255)
+orange: rgb(255,96,34)
+*/
+
 @font-face {
     font-family: 'Daddy in Space DEMO';
     src: url('../fonts/DaddyinspaceDEMO.otf');
@@ -6,77 +10,132 @@
 }
 
 body {
-    background-color: #6E3B56;
-    color: #eddee6;
-    font-family: 'Helvetica', sans-serif;
-    margin: auto;
-    max-width: 60em;
-}
-
-a:visited {
+    background-color: rgb(255,96,34);
     color: white;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    text-transform: lowercase;
+    width: 100vw;
 }
 
-a:hover {
-    color: #eddee6;
-    cursor: pointer;
-}
-
-h1, h2 {
-    color: white;
-    font-family: 'Daddy in Space DEMO', sans-serif;
+header {
+    background-color: rgb(255,96,34);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem;
+    position: fixed;
+    width: 100%;
 }
 
 h1 {
-    text-align: center;
+    color: rgb(204, 242, 255);
+    font-family: 'Daddy in Space DEMO', sans-serif;
+    font-size: 1.3em;
+    margin: 0;
+    padding-top: 0.3rem;
+    text-transform: uppercase;
+}
+
+h3 {
+    color: rgb(204, 242, 255);
+    font-family: 'Daddy in Space DEMO', sans-serif;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+}
+
+body > section {
+    padding-top: 2rem;
+}
+
+input, button {
+    border: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+input[type="submit"] {
+    background-color: rgb(255,96,34);
+    border: 3px solid white;
+    color: white;
+    font-family: 'Daddy in Space DEMO', sans-serif;
+    font-size: 1.5em;
+    margin-top: 1rem;
+    padding: 0.6em 1rem 0.4rem 1rem;
+}
+
+input[type="text"] {
+    box-sizing: border-box;
+    font-size: 0.9em;
+    padding: 0.5rem;
+    width: 80%;
 }
 
 /* NAVIGATION */
-.mainnavigation ul {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    padding-left: 0;
-}
-
-.mainnavigation li {
+nav ul {
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-.mainnavigation li + li {
-    margin-left: 2rem;
+nav ul li {
+    display: inline-block;
 }
 
-.mainnavigation a {
+nav ul a {
+    color: rgb(204, 242, 255);
+    padding: 0.4rem;
     text-decoration: none;
 }
 
-/* QUESTION SECTION */
-.questionandanswer {
-    background-color: #A1567E;
-    border-radius: 10px;
+nav ul a:visited {
+    color: rgb(204, 242, 255);
 }
 
-.questionandanswer + .questionandanswer {
-    margin-top: 2rem;
+nav ul a:hover {
+    text-decoration: line-through;
 }
 
-.question, .answers {
+/* HOME */
+#home {
+    padding: 0.5rem;
+    position: absolute;
+    top: 50%;
+    text-align: center;
+    transform: translateY(-50%);
+}
+
+#home h2 {
+    display: none;
+}
+
+#home h3 {
+    font-size: 3rem;
+}
+
+/* QUIZ GENERATOR */
+.filteroptions {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem;
+}
+
+.allquestions h3 {
+    font-size: 1.5rem;
+    padding: 1rem 0.5rem 0 0.5rem;
     margin: 0;
 }
 
-.answers + .question {
-    margin-top: 2rem;
+.allquestions h4 {
+    margin: 0;
 }
 
-.question {
-    padding: 1em;
+.questionandanswer {
+    padding: 0.5rem;
 }
 
-.answers {
-    padding: 0 1em 1em 3em;
-}
-
-.selected {
-    background-color: #af6a8f;
+.questionandanswer:nth-of-type(2n){
+    background-color: rgba(255, 255, 255, 0.2);
 }
