@@ -58,6 +58,7 @@ input, button {
 }
 
 input[type="submit"] {
+    -webkit-appearance: none; /*Default styling of iphone will be removed*/
     background-color: rgb(255,96,34);
     border-radius: 0;
     border: 3px solid white;
