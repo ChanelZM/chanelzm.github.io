@@ -171,7 +171,7 @@
             var directives = {
                 question : {
                     text: function(){
-                        return this[0];
+                        return this[0].replace(/(&quot\;)/g,"\"");
                     },
                     class: function(){
                         return 'question ' + this[5];

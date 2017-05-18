@@ -187,7 +187,7 @@ nav ul a:hover, #categories ul a:hover {
 }
 
 .answers, #categories .questionpanel ul li {
-    display: block;
+    display: list-item;
     font-size: 0.9rem;
     font-style: italic;
     padding-left: 1rem;
