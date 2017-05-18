@@ -20,8 +20,22 @@
         givenTitle : document.querySelector('.mytitle'),
         questionPanel : document.querySelector('.questionpanel'),
         questionSection : document.querySelector('.questionsection'),
-        filterOptions : document.querySelector('.filteroptions')
+        filterOptions : document.querySelector('.filteroptions'),
+        filterButton : document.querySelector('.filterbutton')
     };
+
+    //When javascript is loaded toggle hide/show filter
+    elements.filterButton.classList.remove('hide');
+    elements.filterButton.classList.add('show');
+    elements.filterOptions.hidden = true;
+
+    elements.filterButton.addEventListener('click', function(){
+        if(elements.filterOptions.hidden == true){
+            elements.filterOptions.hidden = false;
+        } else {
+            elements.filterOptions.hidden = true;
+        }
+    });
 
     //Get the data
     var get = {
