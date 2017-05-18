@@ -22,15 +22,18 @@
         <h4>You don't even have to make up your own questions.</h4>
         <aside>
             <h2>Start right here with your quiz</h2>
-            <form>
-                <p> Title of your quiz
-                    <input type="text" name="title" /> <a href="#quizgenerator">Get started</a> </p>
+            <form method="post" enctype="multipart/form-data">
+                <p>
+                    Title of your quiz
+                </p>
+                <input type="text" name="title" />
+                <input type="submit" value="Get started" class="submitname">
             </form>
         </aside>
     </section>
     <section id="quizgenerator">
         <h2 class="mytitle">My title</h2>
-        
+
         <form class="filteroptions">
             <input type="checkbox" name="filtercategory" checked />
             <label class="label">TV</label>

@@ -3,10 +3,10 @@
 (function () {
     //Execute code in strict mode
     'use strict';
-    
+
     //Later on this variable will contain all the questions of every category
     var rolledUpData = [];
-    
+
     //Select elements in DOM and store them in variable elements
     var elements = {
         navigation: document.querySelector('.mainnavigation'),
@@ -22,7 +22,7 @@
         questionSection : document.querySelector('.questionsection'),
         filterOptions : document.querySelector('.filteroptions')
     };
-    
+
     //Get the data
     var get = {
         data: function(){
@@ -35,8 +35,8 @@
                  number: 23},
                 {name: 'music',
                  number: 12}
-            ]; 
-            
+            ];
+
             //Load in 4 API's with categories
             fills.forEach(function(obj){
                 //Check if the data is already in localStorage then execute map.data()
@@ -58,7 +58,7 @@
                     })
                     .go();
                 }
-            }); 
+            });
         }
  };
     //Filter the properties you dont need and place everything into one array
@@ -76,28 +76,30 @@
                     val.category.replace(' ', '-')//Remove possible spaces
                 ];
             });
-            
+
             //Without forEach, rolledUpData will contain an array for every category, with it, it will be one array with all categories
             mappedData.forEach(function(item){
-                rolledUpData.push(item);  
+                rolledUpData.push(item);
             });
         }
     };
-    
+
     //Settings for starting app.
     var app = {
         init: function(){
             routes.init();
         }
     };
-    
+
     //After initiation, var routes handles the routes of the SPA
     var routes = {
-        init: function(){ 
-            //On load show the home page
-            location.hash = '#home';
+        init: function(){
             //Load data
             get.data();
+
+            document.querySelector('.submitname').addEventListener('click', function(){
+                location.hash = '#quizgenerator';
+            });
 
             routie({
                 'home': function() {
@@ -107,7 +109,7 @@
                     //Hide all other elements except categoryList
                     elements.categoryList.hidden = false;
                     elements.questionPanel.hidden = true;
-                    
+
                     //Render the available categories and toggle the sections
                     sections.toggle('categories');
                     sections.render(rolledUpData, 'local');
@@ -115,28 +117,32 @@
                 'quizgenerator': function(){
                     //Show the title that the user gave.
                     elements.givenTitle.innerHTML = elements.titleInput.value;
-                    
+
                     sections.toggle('quizgenerator');
                     sections.render(rolledUpData, 'local');
                 },
                 'categories/:name': function(name) {
                     elements.categoryList.hidden = true;
                     elements.questionPanel.hidden = false;
-                    
+
                     var selectedCategory = rolledUpData.filter(function(val){
                         return val[5] == name;
                     });
-                
+
                     sections.render(selectedCategory, 'local');
                 },
                 'errorpage': function(){
                     elements.navigation.hidden = true;
                     sections.toggle('error');
+                },
+                //If nothing matches reroute to home
+                '*': function(){
+                    sections.toggle('home');
                 }
             });
         }
     };
-    
+
     var sections = {
         //Render the API data into different HTML elements using Transparency
         render: function(data, source) {
@@ -145,7 +151,7 @@
             }).filter(function(item, index, inputArray){//Source 2: remove all duplicates
                 return inputArray.indexOf(item) == index;
             });
-            
+
             //Use the data parameter to fill the elements in the section. Loop through all the data and add elements for them too.
             var directives = {
                 question : {
@@ -182,7 +188,7 @@
                     }
                 }
             };
-            
+
             var categoryDirectives = {
                 category : {
                     href: function(){
@@ -193,7 +199,7 @@
                     }
                 }
             };
-            
+
             //Create checkboxes and labels for every category
             var values = {
                 filtercategory : {
@@ -213,12 +219,12 @@
                     }
                 }
             };
-            
-            Transparency.render(elements.questionPanel, data, directives); 
+
+            Transparency.render(elements.questionPanel, data, directives);
             Transparency.render(elements.questionSection, data, directives);
             Transparency.render(elements.filterOptions, categories, values);
             Transparency.render(elements.categoryList, categories, categoryDirectives);
-            
+
             //Filter through the data everytime the user clicks on a checkbox
             elements.filterOptions.addEventListener('click', function(){
                 //Creates object with checkbox values and if they are checked.
@@ -228,24 +234,24 @@
                     'History' : document.querySelector('input[value="' + categories[2] + '"]').checked,
                     'Entertainment:-Music' : document.querySelector('input[value="' + categories[3] + '"]').checked
                 };
-                
+
                 function categorySelection(dataArray){
                     return filterValues[dataArray[5]];
                 }
-                
+
                 var filteredData = rolledUpData.filter(categorySelection);
-                
+
                 //Render only the filtered data
                 sections.render(filteredData, 'local');
             });
-            
+
             sections.selectQuestions();
-        }, 
+        },
         toggle: function(route){
             //Change all the other sections to hidden, except the active tab. Source: Shyanta Vleugel
             var currentSection = document.querySelector('#' + route),
                 unactiveSections = document.querySelectorAll('body > section:not(#' + route + ')');
-            
+
             unactiveSections.forEach(function(unactiveSections){
                 unactiveSections.hidden = true;
                 currentSection.hidden = false;
@@ -254,7 +260,7 @@
         selectQuestions: function(){
             //User can select questions for their own quiz
             var questionandanswer = document.querySelectorAll('.questionandanswer');
-            
+
             questionandanswer.forEach(function(element){
                 element.addEventListener('click', function(){
                     if(element.className !== 'questionandanswer selected'){
@@ -266,10 +272,10 @@
             });
         }
     };
-    
+
     //Initiate app
     app.init();
-    
+
 })();
 
 //Sources:
