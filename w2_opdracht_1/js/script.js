@@ -121,6 +121,7 @@
                 },
                 'categories': function(){
                     //Hide all other elements except categoryList
+                    elements.categoryList.classList.remove('hide');
                     elements.categoryList.hidden = false;
                     elements.questionPanel.hidden = true;
 
@@ -136,7 +137,7 @@
                     sections.render(rolledUpData, 'local');
                 },
                 'categories/:name': function(name) {
-                    elements.categoryList.hidden = true;
+                    elements.categoryList.classList.add('hide');
                     elements.questionPanel.hidden = false;
 
                     var selectedCategory = rolledUpData.filter(function(val){
@@ -273,7 +274,7 @@
         },
         selectQuestions: function(){
             //User can select questions for their own quiz
-            var questionandanswer = document.querySelectorAll('.questionandanswer');
+            var questionandanswer = document.querySelectorAll('.questionsection .questionandanswer');
 
             questionandanswer.forEach(function(element){
                 element.addEventListener('click', function(){
