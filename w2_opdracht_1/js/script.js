@@ -24,6 +24,7 @@
         filterButton : document.querySelector('.filterbutton')
     };
 
+
     //When javascript is loaded toggle hide/show filter
     elements.filterButton.classList.remove('hide');
     elements.filterButton.classList.add('show');
@@ -122,6 +123,7 @@
                 'categories': function(){
                     //Hide all other elements except categoryList
                     elements.categoryList.classList.remove('hide');
+                    elements.questionPanel.classList.add('hide');
                     elements.categoryList.hidden = false;
                     elements.questionPanel.hidden = true;
 
@@ -138,6 +140,7 @@
                 },
                 'categories/:name': function(name) {
                     elements.categoryList.classList.add('hide');
+                    elements.questionPanel.classList.remove('hide');
                     elements.questionPanel.hidden = false;
 
                     var selectedCategory = rolledUpData.filter(function(val){
