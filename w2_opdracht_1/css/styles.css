@@ -24,8 +24,11 @@ body {
 header {
     background-color: rgb(255,96,34);
     box-sizing: border-box;
+    display: -webkit-flex;
     display: flex;
+    -webkit-flex-direction: row;
     flex-direction: row;
+    -webkit-justify-content: space-between;
     justify-content: space-between;
     padding: 0.5rem;
     position: fixed;
@@ -232,8 +235,11 @@ aside p {
 }
 
 #categorylist {
+    display: -webkit-flex;
     display: flex;
+    -webkit-flex-direction: column;
     flex-direction: column;
+    -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
 
 }
@@ -273,15 +279,21 @@ aside p {
     }
 
     #categorylist {
+        display: -webkit-flex;
         display: flex;
+        -webkit-flex-direction: row;
         flex-direction: row;
+        -webkit-flex-wrap: wrap;
         flex-wrap: wrap;
     }
 
     #categorylist li {
+        -webkit-display: flex !important;
         display: flex !important;
+        -webkit-justify-content: center;
         justify-content: center;
-      flex-direction: column;
+        -webkit-flex-direction: column;
+        flex-direction: column;
         height: calc(50vw - 1rem);
         position: relative;
         text-align: center;
@@ -313,8 +325,11 @@ aside p {
 
 @media screen and (min-width: 48rem){
     .questionpanel, .questionsection {
+        display: -webkit-flex;
         display: flex;
+        -webkit-flex-direction: row;
         flex-direction: row;
+        -webkit-flex-wrap: wrap;
         flex-wrap: wrap;
     }
 
