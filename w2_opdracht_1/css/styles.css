@@ -324,6 +324,9 @@ aside p {
 }
 
 @media screen and (min-width: 48rem){
+    #categories li {
+        display: inline-block;
+    }
     .questionpanel, .questionsection {
         display: -webkit-flex;
         display: flex;
@@ -334,6 +337,7 @@ aside p {
     }
 
     .questionandanswer {
+        display: inline-block;
         width: calc(50% - 1rem);
     }
 
