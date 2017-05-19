@@ -6,6 +6,7 @@
 
     //Later on this variable will contain all the questions of every category
     var rolledUpData = [];
+    var allQuestions;
 
     //Select elements in DOM and store them in variable elements
     var elements = {
@@ -54,9 +55,9 @@
 
             //Load in 4 API's with categories
             fills.forEach(function(obj){
-                //Check if the data is already in localStorage then execute map.data()
+                //Check if the data is already in localStorage then execute dataset.map()
                 if(localStorage.getItem(obj.name)){
-                    map.data(obj.name);
+                    dataset.map(obj.name);
                 } else {//Otherwise load data from URL
                     aja()
                     .method('get')
@@ -66,7 +67,7 @@
                     .on('200', function(response){
                         //If the dataload is succesful, store into localStorage
                         localStorage.setItem(obj.name, JSON.stringify(response)); //Source 1, put the data into local storage
-                        map.data(obj.name);
+                        dataset.map(obj.name);
                     })
                     .on('error', function(response){ //Ian helped me with this
                         location.href = '#errorpage'; //Source 3: redirect to error page
@@ -77,8 +78,8 @@
         }
  };
     //Filter the properties you dont need and place everything into one array
-    var map = {
-        data : function(data){
+    var dataset = {
+        map : function(data){
             var parsedData = JSON.parse(localStorage.getItem(data));
             var mappedData = parsedData.results.map(function(val){
                 //Return an array with the question, incorrect answers and correct answer.
@@ -96,6 +97,23 @@
             mappedData.forEach(function(item){
                 rolledUpData.push(item);
             });
+        },
+        reduced : function(data){
+            console.log(data);
+            var reducedData = [];
+            var newData = data.reduce(function(memo, curr){
+                //console.log(memo);
+                memo["question"] = curr[0];
+                memo["answer1"] = curr[1];
+                memo["answer2"] = curr[2];
+                memo["answer3"] = curr[3];
+                memo["correctanswer"] = curr[4];
+                memo["category"] = curr[5];
+                reducedData.push(memo);
+                return memo;
+            }, {});
+
+            return reducedData;
         }
     };
 
@@ -160,10 +178,11 @@
             });
         }
     };
-
     var sections = {
         //Render the API data into different HTML elements using Transparency
         render: function(data, source) {
+            var reducedData = dataset.reduced(rolledUpData);
+
             var categories = rolledUpData.map(function(val){
                 return val[5];
             }).filter(function(item, index, inputArray){//Source 2: remove all duplicates
