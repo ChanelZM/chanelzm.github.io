@@ -99,17 +99,17 @@
             });
         },
         reduced : function(data){
-            console.log(data);
             var reducedData = [];
             var newData = data.reduce(function(memo, curr){
-                //console.log(memo);
                 memo["question"] = curr[0];
                 memo["answer1"] = curr[1];
                 memo["answer2"] = curr[2];
                 memo["answer3"] = curr[3];
                 memo["correctanswer"] = curr[4];
                 memo["category"] = curr[5];
+
                 reducedData.push(memo);
+                
                 return memo;
             }, {});
 

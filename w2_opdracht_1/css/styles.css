@@ -356,6 +356,21 @@ aside p {
     .questionandanswer:nth-of-type(4n + 3){
         background-color: rgba(255, 255, 255, 0.2);
     }
+
+    .selected:nth-of-type(4n) {
+        background-color: rgb(69,110,147) !important;
+    }
+
+    .selected:nth-of-type(4n + 1) {
+        background-color: rgb(69,110,147) !important;
+    }
+
+    .selected:nth-of-type(4n + 2){
+        background-color: rgb(57, 91, 121) !important;
+    }
+    .selected:nth-of-type(4n + 3){
+        background-color: rgb(57, 91, 121) !important;
+    }
 }
 
 @media screen and (min-width: 60rem){
